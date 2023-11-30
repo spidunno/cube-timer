@@ -20,6 +20,7 @@ jobs:
     steps:
     - name: npm install and build
       run: |
+        git pull
         export NVM_DIR=~/.nvm
         source ~/.nvm/nvm.sh
         nvm install 18
