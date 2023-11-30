@@ -22,7 +22,8 @@ import DialogContent from '@mui/joy/DialogContent';
 import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
 import ListItemButton from '@mui/joy/ListItemButton';
-import { stringify } from "querystring";
+import { ThemeColorMeta } from "./components/ThemeColorMeta";
+// import cssVarsParser from "@mui/system/cssVars/cssVarsParser";
 
 type historyItem = {time: number; scramble: string; date: number; plus2?: boolean; dnf?: boolean};
 
@@ -106,8 +107,10 @@ function App() {
   }, [running, start, stop, reset, ready]);
 	let bestSolve = [...solveHistory].sort((a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : 0)[0];
 	// console.log(bestSolve);
+	// console.log(cssVarsParser(theme).css);
   return (
     <CssVarsProvider>
+			<ThemeColorMeta></ThemeColorMeta>
 			<title>{(solveHistory[0] ? formatTime((solveHistory[0].time)) + ' - ' : '') + 'Cube Timer'}</title>
       <Sheet
         className="app"

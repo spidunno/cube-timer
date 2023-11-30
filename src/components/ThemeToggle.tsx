@@ -1,9 +1,8 @@
 import { useColorScheme } from "@mui/joy";
-import { useEffect, useState, Component } from "react";
+import { useEffect, useState } from "react";
 import Switch from '@mui/joy/Switch';
 import LightMode from '@mui/icons-material/LightMode';
 import DarkMode from '@mui/icons-material/DarkMode';
-import { PropsOf } from "@emotion/react";
 
 export default function ThemeToggle() {
   const { mode, setMode } = useColorScheme();
