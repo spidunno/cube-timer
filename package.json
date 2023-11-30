@@ -1,7 +1,7 @@
 {
   "name": "cube-timer",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
 	"homepage": "https://spidunno.github.io/timer",
   "dependencies": {
     "@emotion/react": "^11.11.1",
