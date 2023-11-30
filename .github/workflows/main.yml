@@ -16,7 +16,7 @@ on:
 jobs:
   build:
     name: Build for production and deploy to pages
-    runs-on: ubunut-latest
+    runs-on: self-hosted
     steps:
     - name: npm install and build
       run: |
@@ -37,7 +37,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     # Specify runner + deployment step
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
