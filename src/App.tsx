@@ -105,7 +105,7 @@ function App() {
     };
   }, [running, start, stop, reset, ready]);
 	let bestSolve = [...solveHistory].sort((a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : 0)[0];
-	console.log(bestSolve);
+	// console.log(bestSolve);
   return (
     <CssVarsProvider>
 			<title>{(solveHistory[0] ? formatTime((solveHistory[0].time)) + ' - ' : '') + 'Cube Timer'}</title>
