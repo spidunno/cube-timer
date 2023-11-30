@@ -58,7 +58,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Build app
-        run: git pull && npm run build
+        run: CI=false && npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
