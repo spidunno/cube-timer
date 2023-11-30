@@ -27,6 +27,12 @@ jobs:
         nvm use 18
         npm install --save
         npm run build
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: github-pages
+        path: |
+          build
   deploy:
     # Add a dependency to the build job
     needs: build
