@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - main
+      - main
   workflow_dispatch:
     inputs:
       logLevel:
@@ -10,46 +10,48 @@ on:
         default: 'warning'
         type: choice
         options:
-        - info
-        - warning
-        - debug
+          - info
+          - warning
+          - debug
 
 jobs:
   build:
     name: Build for production and deploy to pages
     runs-on: self-hosted
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 18
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Build
-      run: npm run build
+      - name: Build
+        run: npm run build
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: github-pages
-        path: build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: github-pages
+          path: build
 
   deploy:
     needs: build
     runs-on: self-hosted
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Deploy to GitHub Pages
-      uses: actions/deploy-pages@v2
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        keep_files: true
-        cleanup: false
-        publish_dir: ./build
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          timeout: 120000 # Set an appropriate timeout value
+          error_count: 5 # Set an appropriate error count value
+          reporting_interval: 1000 # Set an appropriate reporting interval value
+          artifact_name: github-pages # Specify the artifact name
+          preview: false # Disable preview deployment
