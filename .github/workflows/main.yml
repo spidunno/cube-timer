@@ -20,6 +20,9 @@ jobs:
     steps:
     - name: npm install and build
       run: |
+        git pull
+        export NVM_DIR=~/.nvm
+        source ~/.nvm/nvm.sh
         npm install
         npm run build
   deploy:
