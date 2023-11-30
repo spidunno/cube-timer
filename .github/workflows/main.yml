@@ -25,7 +25,7 @@ jobs:
         source ~/.nvm/nvm.sh
         nvm install 18
         nvm use 18
-        bun install
+        npm install --save
         npm run build
   deploy:
     # Add a dependency to the build job
