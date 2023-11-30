@@ -24,6 +24,8 @@ import ListItem from '@mui/joy/ListItem';
 import ListItemButton from '@mui/joy/ListItemButton';
 import { stringify } from "querystring";
 
+type historyItem = {time: number; scramble: string; date: number; plus2?: boolean; dnf?: boolean};
+
 function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [scramble, refreshScramble, setScramble] = useScramble({});
@@ -37,11 +39,11 @@ function App() {
     localStorage.setItem("history", JSON.stringify([]));
   }
   const [solveHistory, setSolveHistory] = useState(
-    JSON.parse(localStorage.getItem("history") as string)
+    JSON.parse(localStorage.getItem("history") as string) as Array<historyItem>
   );
 	useEffect(() => {
 		if (!running && time !== 0) {
-			setSolveHistory((s: {time: Number, scramble: string, date: number}[]) => 
+			setSolveHistory((s: Array<historyItem>) => 
 				[{ time, scramble, date: Date.now() }, ...solveHistory]
 			);
 			setReady(false);
@@ -102,10 +104,11 @@ function App() {
       clearTimeout(timeout);
     };
   }, [running, start, stop, reset, ready]);
-
+	let bestSolve = [...solveHistory].sort((a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : 0)[0];
+	console.log(bestSolve);
   return (
     <CssVarsProvider>
-			<title>{(solveHistory[0] ? formatTime((solveHistory[0].time.toString())) + ' - ' : '') + 'Cube Timer'}</title>
+			<title>{(solveHistory[0] ? formatTime((solveHistory[0].time)) + ' - ' : '') + 'Cube Timer'}</title>
       <Sheet
         className="app"
         color="primary"
@@ -225,15 +228,22 @@ function App() {
         >
           <code>{formatTime(time)}</code>
         </Typography>
-				{solveHistory.length >= 2 && solveHistory[0].time - (solveHistory[1]?.time || solveHistory[0].time) !== 0 ? 
+				{time !== 0 && solveHistory.length >= 2 ? ((solveHistory[0].time - bestSolve?.time) !== 0 ? 
 					<Typography
+						fontSize={'3vw'}
+						level="h1"
+						color={Math.sign(solveHistory[0].time - (bestSolve?.time || solveHistory[0].time)) === -1 ? 'success' : 'danger'}
+						style={{transition: 'opacity 250ms',opacity: running || ready ? 0 : 100, position: 'relative', top: 'calc(133px + 1em)'}}
+					>
+						{(Math.sign(solveHistory[0].time - (bestSolve?.time || solveHistory[0].time)) === -1 ? '-' : Math.sign(solveHistory[0].time - (bestSolve?.time || solveHistory[0].time)) === 1 ? '+' : '') + formatTime(Math.abs(solveHistory[0].time - (bestSolve?.time || solveHistory[0].time)))}
+					</Typography> : <Typography
 						fontSize={'3vw'}
 						level="h1"
 						color={Math.sign(solveHistory[0].time - (solveHistory[1]?.time || solveHistory[0].time)) === -1 ? 'success' : 'danger'}
 						style={{transition: 'opacity 250ms',opacity: running || ready ? 0 : 100, position: 'relative', top: 'calc(133px + 1em)'}}
 					>
 						{(Math.sign(solveHistory[0].time - (solveHistory[1]?.time || solveHistory[0].time)) === -1 ? '-' : Math.sign(solveHistory[0].time - (solveHistory[1]?.time || solveHistory[0].time)) === 1 ? '+' : '') + formatTime(Math.abs(solveHistory[0].time - (solveHistory[1]?.time || solveHistory[0].time)))}
-					</Typography> : ''}
+					</Typography> ) : ''}
       </Sheet>
     </CssVarsProvider>
   );
