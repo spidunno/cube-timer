@@ -22,7 +22,8 @@ jobs:
       run: |
         export NVM_DIR=~/.nvm
         source ~/.nvm/nvm.sh
-        npm install
+        nvm use 18
+        bun install
         npm run build
   deploy:
     # Add a dependency to the build job
