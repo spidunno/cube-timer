@@ -38,6 +38,7 @@ jobs:
         with:
           name: github-pages
           path: build
+          zip: true
 
   deploy:
     needs: build
